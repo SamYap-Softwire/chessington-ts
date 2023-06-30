@@ -74,5 +74,40 @@ describe('Board', () => {
         it('isStalemate returns true when board position repeats involving multiple moves');
         // need specific example for this
 
+        it('two boards with the same position and same current player are the same', () => {
+            // Arrange
+            const myKing = new King(Player.WHITE);
+            const theirKing = new King(Player.BLACK);
+            const alternateBoard = new Board();
+
+            // Act
+            board.setPiece(Square.at(0,3), myKing);
+            board.setPiece(Square.at(5,5), theirKing);
+
+            alternateBoard.setPiece(Square.at(0,3), myKing);
+            alternateBoard.setPiece(Square.at(5,5), theirKing);
+
+            // Assert
+            (board.compareWith(alternateBoard)).should.be.true;
+        })
+
+        it('two boards with the same position and different current player are different', () => {
+            // Arrange
+            const myKing = new King(Player.WHITE);
+            const theirKing = new King(Player.BLACK);
+            const alternateBoard = new Board();
+            alternateBoard.currentPlayer = Player.BLACK;
+
+            // Act
+            board.setPiece(Square.at(0,3), myKing);
+            board.setPiece(Square.at(5,5), theirKing);
+
+            alternateBoard.setPiece(Square.at(0,3), myKing);
+            alternateBoard.setPiece(Square.at(5,5), theirKing);
+
+            // Assert
+            (board.compareWith(alternateBoard)).should.be.false;
+
+        })
     });
 });

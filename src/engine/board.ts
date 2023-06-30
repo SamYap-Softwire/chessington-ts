@@ -103,7 +103,7 @@ export default class Board {
             }
         }
         return true;
-        // implement tests
+        // TODO: implement tests
     }
 
     public updateBoard(){
@@ -116,7 +116,7 @@ export default class Board {
             }
         }
         return exists;
-        // implement tests
+        // TODO: implement tests
     }
 
     public threeFoldRepetition(){
@@ -127,7 +127,7 @@ export default class Board {
             }
         }
         return false;
-        // implement tests
+        // TODO: implement tests
     }
 
     public isStalemate(){
