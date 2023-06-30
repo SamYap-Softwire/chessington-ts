@@ -103,7 +103,6 @@ export default class Board {
             }
         }
         return true;
-        // TODO: implement tests
     }
 
     public updateBoard(){

@@ -107,7 +107,25 @@ describe('Board', () => {
 
             // Assert
             (board.compareWith(alternateBoard)).should.be.false;
-
         })
+
+        it('two boards with the same pieces in different positions are different', () => {
+            // Arrange
+            const myKing = new King(Player.WHITE);
+            const theirKing = new King(Player.BLACK);
+            const alternateBoard = new Board();
+
+            // Act
+            board.setPiece(Square.at(0,3), myKing);
+            board.setPiece(Square.at(5,5), theirKing);
+
+            alternateBoard.setPiece(Square.at(3,3), myKing);
+            alternateBoard.setPiece(Square.at(5,5), theirKing);
+
+            // Assert
+            (board.compareWith(alternateBoard)).should.be.false;
+        })
+
+
     });
 });
