@@ -9,6 +9,7 @@ import Rook from './pieces/rook';
 export default class Board {
     public currentPlayer: Player;
     public previousMove: (Square[]) = [];
+    public allBoardPositions: [Board, number][] = [];
     private readonly board: (Piece | undefined)[][];
 
     public constructor(currentPlayer?: Player) {
@@ -42,6 +43,7 @@ export default class Board {
             this.setPiece(fromSquare, undefined);
             this.currentPlayer = (this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE);
             this.previousMove = [fromSquare, toSquare];
+            this.updateBoard();
         }
     }
 
@@ -76,6 +78,74 @@ export default class Board {
             }
         }
         return allRooksInStartingPosition;
+    }
+
+    public isLegalMove(){
+        // TODO: Implement this method
+        return true;
+    }
+
+    public inCheck() {
+        // TODO: Implement this method
+        return false;
+    }
+
+    public compareWith(board: Board){
+        if (this.currentPlayer !== board.currentPlayer){
+            return false;
+        }
+
+        for (let row = 0; row < 8; row++){
+            for (let col = 0; col < 8; col++){
+                if (this.getPiece(Square.at(row, col)) !== board.getPiece(Square.at(row, col))){
+                    return false;
+                }
+            }
+        }
+        return true;
+        // implement tests
+    }
+
+    public updateBoard(){
+        let exists = false;
+        for (let index = 0; index < this.allBoardPositions.length; index++){
+            if (this.compareWith(this.allBoardPositions[index][0])){
+                this.allBoardPositions[index][1] += 1;
+                exists = true;
+                break;
+            }
+        }
+        return exists;
+        // implement tests
+    }
+
+    public threeFoldRepetition(){
+        for (let index = 0; index < this.allBoardPositions.length; index++){
+            const currentBoardCount = this.allBoardPositions[index];
+            if (this.compareWith(currentBoardCount[0]) && currentBoardCount[1] === 3) {
+                return true;
+            }
+        }
+        return false;
+        // implement tests
+    }
+
+    public isStalemate(){
+        if (!(this.inCheck())) {
+            // case if current king not in check but there are no legal moves for any piece
+            for (const row of this.board) {
+                for (const piece of row) {
+                    if (piece !== undefined && piece.player === this.currentPlayer) {
+                        if (piece.getAvailableMoves(this).length === 0) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        return this.threeFoldRepetition();
+        // TODO: Need to think of where this is implemented
     }
 
     private createBoard() {
